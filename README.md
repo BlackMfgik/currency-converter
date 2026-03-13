@@ -16,14 +16,16 @@ A popup will appear instantly with the converted amount.
 ## 🚀 Installation
 
 1. Download or clone this repository
-2. Open `chrome://extensions/` or `vivaldi://extensions/` or  `opera://extensions/`
+2. Open `chrome://extensions/` or `vivaldi://extensions/` or `opera://extensions/`
 3. Enable **Developer mode** (top right)
 4. Click **Load unpacked** → select the extension folder
 
 ### Firefox
+
 > ⚠️ Firefox uses a different extension format (Manifest V2). This extension is built for Manifest V3 and is **not fully compatible** with Firefox.
 >
 > For temporary testing only:
+>
 > 1. Open `about:debugging`
 > 2. Click **This Firefox** → **Load Temporary Add-on**
 > 3. Select any file inside the extension folder
@@ -37,6 +39,7 @@ Also recognizes written names: `dollar`, `euro`, `pound`, `yen`, `zloty` and mor
 ## ⚙️ How conversion works
 
 Rates are fetched from three APIs with automatic fallback if one is unavailable:
+
 - [frankfurter.app](https://frankfurter.app)
 - [open.er-api.com](https://open.er-api.com)
 - [fawazahmed0 currency-api](https://github.com/fawazahmed0/exchange-api)
