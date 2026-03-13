@@ -1,0 +1,167 @@
+#currency-popup {
+  position: fixed;
+  z-index: 2147483647;
+  min-width: 160px;
+  max-width: 240px;
+  background: #1a1d2e;
+  color: #e8eaf0;
+  border-radius: 10px;
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  opacity: 0;
+  transform: translateY(4px) scale(0.97);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+  user-select: none;
+  pointer-events: auto;
+  overflow: hidden;
+}
+
+#currency-popup.popup-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.popup-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 10px;
+}
+
+.popup-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.popup-source-amount {
+  font-size: 11px;
+  color: #7a7f9a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.popup-converted-amount {
+  font-size: 16px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #4a9eff, #7c6fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  white-space: nowrap;
+}
+
+.popup-close-btn {
+  background: none;
+  border: none;
+  color: #444;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 3px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  transition: color 0.15s;
+  line-height: 1;
+  margin-left: auto;
+}
+
+.popup-close-btn:hover {
+  color: #fff;
+}
+
+.popup-rate-info {
+  font-size: 10px;
+  color: #44485e;
+  padding: 5px 10px 7px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.popup-loading {
+  display: flex;
+  justify-content: center;
+  padding: 6px 0 10px;
+}
+
+.popup-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(74, 158, 255, 0.2);
+  border-top-color: #4a9eff;
+  border-radius: 50%;
+  animation: spinner-rotate 0.7s linear infinite;
+}
+
+@keyframes spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.popup-error-message {
+  font-size: 11px;
+  color: #ff6b6b;
+  padding: 4px 10px 8px;
+  text-align: center;
+}
+
+.popup-currency-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 8px;
+}
+
+.popup-currency-label {
+  font-size: 10px;
+  color: #44485e;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.popup-select-wrap {
+  position: relative;
+}
+
+.popup-select-wrap::after {
+  content: "▾";
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7a7f9a;
+  pointer-events: none;
+  font-size: 10px;
+}
+
+.popup-currency-select {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e8eaf0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 3px 22px 3px 7px;
+  font-size: 11px;
+  font-family: inherit;
+  appearance: none;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.popup-currency-select:hover,
+.popup-currency-select:focus {
+  border-color: rgba(74, 158, 255, 0.5);
+}
+
+.popup-currency-select option {
+  background: #1a1d2e;
+  color: #e8eaf0;
+}
