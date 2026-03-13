@@ -91,7 +91,18 @@ async function convert() {
   }
 
   const rate = convertAmount(1, from, to, rates);
-  resultBox.innerHTML = `<span class="result-amount">${formatNum(converted, to)}</span><span class="result-currency">${to}</span>`;
+  const formatted = formatNum(converted, to);
+  resultBox.innerHTML = `<span class="result-amount">${formatted}</span><span class="result-currency">${to}</span>`;
+  const amountEl = resultBox.querySelector(".result-amount");
+  if (amountEl) {
+    const maxW = resultBox.clientWidth - 48;
+    let size = 18;
+    while (size > 9) {
+      if (formatted.length * size * 0.6 <= maxW) break;
+      size -= 0.5;
+    }
+    amountEl.style.fontSize = size + "px";
+  }
   rateInfo.textContent = `1 ${from} = ${rate ? formatNum(rate, to) : "?"} ${to}  ·  ${rates._date || ""}`;
 }
 

@@ -667,10 +667,24 @@ function openConverterModal(
   const resultEl = overlay.querySelector("#cv-result");
   const rateEl = overlay.querySelector("#cv-rate");
 
+  function fitResult(text) {
+    resultEl.value = text;
+    resultEl.style.fontSize = "15px";
+    const maxWidth = resultEl.clientWidth - 20;
+    let size = 15;
+    while (size > 9) {
+      const charWidth = size * 0.6;
+      if (text.length * charWidth <= maxWidth) break;
+      size -= 0.5;
+    }
+    resultEl.style.fontSize = size + "px";
+  }
+
   async function runConvert() {
     const amount = parseFloat(amountEl.value);
     if (!amountEl.value || isNaN(amount) || amount <= 0) {
       resultEl.value = "";
+      resultEl.style.fontSize = "";
       rateEl.textContent = "";
       return;
     }
@@ -684,8 +698,9 @@ function openConverterModal(
     }
     const converted = convertAmount(amount, fromValue, toValue, rates);
     const rate = convertAmount(1, fromValue, toValue, rates);
-    resultEl.value =
+    const formatted =
       converted !== null ? formatAmount(converted, toValue) : "❌";
+    fitResult(formatted);
     rateEl.textContent = rate
       ? `1 ${fromValue} = ${formatAmount(rate, toValue)} ${toValue}`
       : "";
