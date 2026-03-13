@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Конвертер валют</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        width: 280px;
+        background: #0f1117;
+        color: #e8eaf0;
+        font-family: "DM Sans", sans-serif;
+        overflow: hidden;
+      }
+
+      .header {
+        padding: 16px 16px 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo {
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(135deg, #4a9eff, #7c6fff);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+
+      .header-text h1 {
+        font-size: 13px;
+        font-weight: 600;
+        color: #e8eaf0;
+        letter-spacing: -0.2px;
+      }
+
+      .header-text p {
+        font-size: 10px;
+        color: #44485e;
+        margin-top: 1px;
+      }
+
+      .section {
+        padding: 14px 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .section-label {
+        font-size: 10px;
+        font-weight: 500;
+        color: #44485e;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin-bottom: 10px;
+      }
+
+      .currency-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+      }
+
+      .currency-chip {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 8px;
+        padding: 7px 6px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        text-align: center;
+      }
+
+      .currency-chip:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(74, 158, 255, 0.3);
+      }
+
+      .currency-chip.active {
+        background: rgba(74, 158, 255, 0.12);
+        border-color: rgba(74, 158, 255, 0.5);
+      }
+
+      .chip-flag {
+        font-size: 14px;
+        display: block;
+        margin-bottom: 2px;
+      }
+      .chip-code {
+        font-size: 10px;
+        font-family: "DM Mono", monospace;
+        font-weight: 500;
+        color: #7a7f9a;
+      }
+      .currency-chip.active .chip-code {
+        color: #4a9eff;
+      }
+
+      .convert-section {
+        padding: 14px 16px;
+      }
+
+      .convert-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .convert-label {
+        font-size: 10px;
+        font-weight: 500;
+        color: #44485e;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        width: 28px;
+        flex-shrink: 0;
+      }
+
+      .currency-select {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        color: #e8eaf0;
+        font-family: "DM Sans", sans-serif;
+        font-size: 12px;
+        padding: 7px 10px;
+        appearance: none;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.15s;
+      }
+
+      .currency-select:focus {
+        border-color: rgba(74, 158, 255, 0.4);
+      }
+
+      .swap-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        color: #7a7f9a;
+        cursor: pointer;
+        padding: 7px 10px;
+        font-size: 13px;
+        transition: all 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-self: stretch;
+      }
+
+      .swap-btn:hover {
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+
+      .amount-input {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        color: #e8eaf0;
+        font-family: "DM Mono", monospace;
+        font-size: 18px;
+        font-weight: 500;
+        padding: 10px 12px;
+        outline: none;
+        transition: border-color 0.15s;
+        margin-bottom: 10px;
+      }
+
+      .amount-input:focus {
+        border-color: rgba(74, 158, 255, 0.4);
+      }
+      .amount-input::placeholder {
+        color: #2a2d3e;
+      }
+
+      .result-box {
+        background: rgba(74, 158, 255, 0.06);
+        border: 1px solid rgba(74, 158, 255, 0.15);
+        border-radius: 8px;
+        padding: 10px 12px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .result-amount {
+        font-family: "DM Mono", monospace;
+        font-size: 18px;
+        font-weight: 500;
+        background: linear-gradient(135deg, #4a9eff, #7c6fff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .result-currency {
+        font-size: 11px;
+        color: #44485e;
+        font-weight: 500;
+      }
+
+      .result-loading {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #44485e;
+        font-size: 12px;
+      }
+
+      .spinner {
+        width: 12px;
+        height: 12px;
+        border: 2px solid rgba(74, 158, 255, 0.2);
+        border-top-color: #4a9eff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .rate-info {
+        font-size: 10px;
+        color: #2a2d3e;
+        text-align: center;
+        padding: 8px 16px 12px;
+        font-family: "DM Mono", monospace;
+      }
+
+      .saved-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10px;
+        color: #4a9eff;
+        opacity: 0;
+        transition: opacity 0.2s;
+        margin-left: auto;
+      }
+      .saved-badge.show {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo">💱</div>
+      <div class="header-text">
+        <h1>Currency Converter</h1>
+        <p>Виділи текст або введи суму нижче</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div
+        class="section-label"
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        "
+      >
+        <span>Конвертувати в</span>
+        <span class="saved-badge" id="savedBadge">✓ збережено</span>
+      </div>
+      <div class="currency-grid" id="currencyGrid">
+        <div class="currency-chip active" data-code="UAH">
+          <span class="chip-flag">🇺🇦</span><span class="chip-code">UAH</span>
+        </div>
+        <div class="currency-chip" data-code="USD">
+          <span class="chip-flag">🇺🇸</span><span class="chip-code">USD</span>
+        </div>
+        <div class="currency-chip" data-code="EUR">
+          <span class="chip-flag">🇪🇺</span><span class="chip-code">EUR</span>
+        </div>
+        <div class="currency-chip" data-code="GBP">
+          <span class="chip-flag">🇬🇧</span><span class="chip-code">GBP</span>
+        </div>
+        <div class="currency-chip" data-code="CHF">
+          <span class="chip-flag">🇨🇭</span><span class="chip-code">CHF</span>
+        </div>
+        <div class="currency-chip" data-code="PLN">
+          <span class="chip-flag">🇵🇱</span><span class="chip-code">PLN</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="convert-section">
+      <div class="convert-row">
+        <span class="convert-label">З</span>
+        <select class="currency-select" id="fromCurrency">
+          <option value="USD">🇺🇸 USD — Долар</option>
+          <option value="EUR">🇪🇺 EUR — Євро</option>
+          <option value="GBP">🇬🇧 GBP — Фунт</option>
+          <option value="JPY">🇯🇵 JPY — Єна</option>
+          <option value="CHF">🇨🇭 CHF — Франк</option>
+          <option value="UAH">🇺🇦 UAH — Гривня</option>
+          <option value="RUB">🏴 RUB — Рубль</option>
+          <option value="PLN">🇵🇱 PLN — Злотий</option>
+          <option value="CZK">🇨🇿 CZK — Крона</option>
+          <option value="CAD">🇨🇦 CAD — Канад. долар</option>
+          <option value="AUD">🇦🇺 AUD — Австр. долар</option>
+          <option value="CNY">🇨🇳 CNY — Юань</option>
+          <option value="KRW">🇰🇷 KRW — Вона</option>
+          <option value="INR">🇮🇳 INR — Рупія</option>
+          <option value="TRY">🇹🇷 TRY — Ліра</option>
+          <option value="NOK">🇳🇴 NOK — Норв. крона</option>
+          <option value="SEK">🇸🇪 SEK — Швед. крона</option>
+          <option value="DKK">🇩🇰 DKK — Данська крона</option>
+        </select>
+        <button class="swap-btn" id="swapBtn" title="Поміняти місцями">
+          ⇅
+        </button>
+      </div>
+      <div class="convert-row">
+        <span class="convert-label">В</span>
+        <select class="currency-select" id="toCurrency">
+          <option value="UAH" selected>🇺🇦 UAH — Гривня</option>
+          <option value="USD">🇺🇸 USD — Долар</option>
+          <option value="EUR">🇪🇺 EUR — Євро</option>
+          <option value="GBP">🇬🇧 GBP — Фунт</option>
+          <option value="JPY">🇯🇵 JPY — Єна</option>
+          <option value="CHF">🇨🇭 CHF — Франк</option>
+          <option value="RUB">🏴 RUB — Рубль</option>
+          <option value="PLN">🇵🇱 PLN — Злотий</option>
+          <option value="CZK">🇨🇿 CZK — Крона</option>
+          <option value="CAD">🇨🇦 CAD — Канад. долар</option>
+          <option value="AUD">🇦🇺 AUD — Австр. долар</option>
+          <option value="CNY">🇨🇳 CNY — Юань</option>
+          <option value="KRW">🇰🇷 KRW — Вона</option>
+          <option value="INR">🇮🇳 INR — Рупія</option>
+          <option value="TRY">🇹🇷 TRY — Ліра</option>
+          <option value="NOK">🇳🇴 NOK — Норв. крона</option>
+          <option value="SEK">🇸🇪 SEK — Швед. крона</option>
+          <option value="DKK">🇩🇰 DKK — Данська крона</option>
+        </select>
+      </div>
+
+      <input
+        class="amount-input"
+        id="amountInput"
+        type="number"
+        placeholder="100"
+        min="0"
+      />
+
+      <div class="result-box" id="resultBox">
+        <span class="result-loading"
+          ><span class="spinner"></span> Введи суму</span
+        >
+      </div>
+    </div>
+
+    <div class="rate-info" id="rateInfo">—</div>
+
+    <script src="popup_window.js"></script>
+  </body>
+</html>
