@@ -15,21 +15,8 @@ A popup will appear instantly with the converted amount.
 
 ## 🚀 Installation
 
-### Chrome
 1. Download or clone this repository
-2. Open `chrome://extensions/`
-3. Enable **Developer mode** (top right)
-4. Click **Load unpacked** → select the extension folder
-
-### Vivaldi
-1. Download or clone this repository
-2. Open `vivaldi://extensions/`
-3. Enable **Developer mode** (top right)
-4. Click **Load unpacked** → select the extension folder
-
-### Opera
-1. Download or clone this repository
-2. Open `opera://extensions/`
+2. Open `chrome://extensions/` or `vivaldi://extensions/` or Open `opera://extensions/`
 3. Enable **Developer mode** (top right)
 4. Click **Load unpacked** → select the extension folder
 
