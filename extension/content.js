@@ -669,15 +669,23 @@ function openConverterModal(
 
   function fitResult(text) {
     resultEl.value = text;
-    resultEl.style.fontSize = "15px";
-    const maxWidth = resultEl.clientWidth - 20;
-    let size = 15;
-    while (size > 9) {
-      const charWidth = size * 0.6;
-      if (text.length * charWidth <= maxWidth) break;
-      size -= 0.5;
+    resultEl.style.fontSize = "";
+    const modal = overlay.querySelector("#cv-modal");
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    ctx.font =
+      "500 15px -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif";
+    const textWidth = ctx.measureText(text).width;
+    const colWidth = Math.max(120, textWidth + 24);
+    const bothCols = colWidth * 2 + 8;
+    const needed = bothCols + 28;
+    const maxW = window.innerWidth - 32;
+    const newWidth = Math.min(Math.max(300, needed), maxW);
+    modal.style.width = newWidth + "px";
+    let left = parseFloat(modal.style.left) || 0;
+    if (left + newWidth > window.innerWidth - 8) {
+      modal.style.left = Math.max(8, window.innerWidth - newWidth - 8) + "px";
     }
-    resultEl.style.fontSize = size + "px";
   }
 
   async function runConvert() {
@@ -685,6 +693,7 @@ function openConverterModal(
     if (!amountEl.value || isNaN(amount) || amount <= 0) {
       resultEl.value = "";
       resultEl.style.fontSize = "";
+      overlay.querySelector("#cv-modal").style.width = "300px";
       rateEl.textContent = "";
       return;
     }
