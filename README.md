@@ -1,4 +1,4 @@
-# 💱 Currency Converter — Chrome Extension
+# 💱 Currency Converter — Extension
 
 Highlight any amount on any webpage and instantly see the conversion to UAH, USD, or RUB.
 
